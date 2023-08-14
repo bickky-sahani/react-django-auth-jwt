@@ -1,0 +1,30 @@
+version: "3.9"
+
+services:
+  web:
+    build: .
+    command: python /react-django-auth/backend-main/manage.py runserver 0.0.0.0:8000
+    restart: always
+    volumes:
+      - .:/react-django-auth/backend-main/
+    ports:
+      - 8000:8000
+    depends_on:
+      - db
+  db:
+    image: postgres:13
+    #image: postgis/postgis:11-2.5-alpine
+    restart: always
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - "POSTGRES_HOST_AUTH_METHOD=trust"
+    healthcheck:
+      #CHANGE 1: this command checks if the database is ready, right on the source db server
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:

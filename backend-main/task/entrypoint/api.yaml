@@ -1,0 +1,189 @@
+openapi: "3.0.2"
+info:
+  title: OpenApi specification for Claim Payment Act
+  contact:
+    email: samir.thapa@varicon.com.au
+  version: "1.0"
+tags:
+  - name: Claim Payment Act
+    description: Claim payment act
+    
+servers:
+  - url: 'https://api-dev.varicontest.com.au/api/v1/'
+  - url: 'http://localhost/api/v1/'
+  - url: 'http://localhost:8001/api/v1/'
+
+
+
+
+
+components:
+  schemas:
+    claim-payment-act:
+      title: Claim Payment Act
+      type: object
+      description: base model for form data
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+      required:
+      - title
+      - description
+
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+  
+
+  responses:
+    error:
+      description: ERROR
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                description: Describes the error in a human-readable format.
+                type: string
+                example: Permission denied.
+    forbidden:
+      description: ERROR
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                description: Describes the error in a human-readable format.
+                type: string
+                example: Permission denied.
+    invalid_input:
+      description: ERROR
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                description: Describes the error in a human-readable format.
+                type: string
+                example: Invalid Input.
+    not_found:
+      description: ERROR
+      content:
+        application/json:
+          schema: 
+            type: object
+            properties:
+              error:
+                description: Describes the error in a human-readable format.
+                type: string
+                example: Not Found.
+
+
+
+paths:
+  /claim-payment-act/:
+    summary: Get all payment act
+
+    get:
+      parameters:
+        - in : query
+          name: keyword
+          schema:
+            type: string
+          description: search keyword
+ 
+      tags:
+        - Claim Payment Act
+      responses:
+        "200":
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/claim-payment-act"
+    post:
+      tags:
+        - Claim Payment Act
+      summary: Create Claim Payment Act
+      description: ""
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/claim-payment-act"
+      responses:
+        "200":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/claim-payment-act"
+                
+                
+        "403":
+          $ref: "#/components/responses/forbidden"
+      security:
+        - varicon_auth: []
+
+
+  /claim-payment-act/{id}:
+    put:
+      tags:
+        - Claim Payment Act
+      summary: Update Claim Payment Act
+      description: ""
+      parameters:
+        - in : path
+          name: id
+          schema:
+            type: integer
+          description: ID of the payment act
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/claim-payment-act"
+      responses:
+        "200":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/claim-payment-act"
+
+                
+
+        "403":
+          $ref: "#/components/responses/forbidden"
+      security:
+        - varicon_auth: []
+
+    delete:
+      summary: Delete payment act
+      description: 'Delete Payment act'
+      parameters:
+        - in : path
+          name: id
+          schema:
+            type: integer
+          description: ID of the payment act
+          required: true
+      tags:
+        - Claim Payment Act
+      responses:
+        '200':
+          description: OK
+      security:
+        - varicon_auth: []
+    
+                  
